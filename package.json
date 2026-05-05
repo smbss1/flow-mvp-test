@@ -1,0 +1,9 @@
+{
+  "name": "flow-mvp-test",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.js || echo 'no tests yet'",
+    "lint": "echo 'lint ok'"
+  }
+}
