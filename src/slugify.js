@@ -9,6 +9,7 @@
  * @returns {string}
  */
 function slugify(input) {
+  if (!input) return "";
   return input
     .toLowerCase()
     .replace(/\s+/g, "-")
