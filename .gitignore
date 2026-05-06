@@ -1,0 +1,9 @@
+
+# agent-flow
+.agent-flow/.env
+.agent-flow/sessions/
+.agent-flow/worktrees/
+.agent-flow/pool-state.json
+
+.npm/
+npm-debug.log*
