@@ -17,4 +17,18 @@ function slugify(input) {
     .replace(/^-+|-+$/g, "");
 }
 
-module.exports = { slugify };
+/**
+ * Converts a slug back to a readable string.
+ * - Replaces hyphens with spaces
+ * - Capitalizes first letter
+ *
+ * @param {string} slug
+ * @returns {string}
+ */
+function unslugify(slug) {
+  if (!slug) return "";
+  const withSpaces = slug.replace(/-/g, " ");
+  return withSpaces.charAt(0).toUpperCase() + withSpaces.slice(1);
+}
+
+module.exports = { slugify, unslugify };

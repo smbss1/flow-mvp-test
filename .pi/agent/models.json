@@ -1,0 +1,9 @@
+{
+  "providers": {
+    "openrouter": {
+      "baseUrl": "http://flow-llm-proxy-t03:8080/v1/openrouter",
+      "api": "openai-completions",
+      "apiKey": "0951b5fc-32d4-424c-aa2d-a0900b81241d"
+    }
+  }
+}
