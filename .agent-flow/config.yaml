@@ -1,0 +1,83 @@
+version: 1
+
+token_profile: balanced
+inline_level: auto
+
+phases:
+  skip_research: auto
+  skip_reassessment: auto
+
+models:
+  discovery:
+    model: anthropic/claude-opus-4-7
+    fallbacks: []
+  specifier:
+    model: anthropic/claude-sonnet-4-6
+    fallbacks:
+      - openrouter/z-ai/glm-5
+  planner:
+    model: anthropic/claude-opus-4-7
+    fallbacks:
+      - openrouter/z-ai/glm-5
+  worker:
+    model: anthropic/claude-sonnet-4-6
+    fallbacks:
+      - openrouter/anthropic/claude-sonnet-4-6
+  worker_simple:
+    model: anthropic/claude-haiku-4-5-20251001
+    fallbacks: []
+  self_review:
+    model: anthropic/claude-sonnet-4-6
+    fallbacks: []
+  classifier:
+    model: anthropic/claude-haiku-4-5-20251001
+    fallbacks: []
+
+tracker:
+  type: github
+  repo: "smbss1/flow-mvp-test"
+  labels:
+    blocked: "flow:blocked"
+    ready: "flow:ready"
+    in_progress: "flow:in-progress"
+    in_review: "flow:in-review"
+    request_changes: "flow:request-changes"
+
+git:
+  host: github
+  base_branch: main
+  branch_prefix: "flow/"
+  isolation: worktree
+
+workers:
+  max_parallel: 1
+  sandbox: docker
+  network:
+    mode: whitelist
+    allow_git_hosts: true
+    allow_llm_apis: true
+    allow_package_managers: false
+    extra_domains: []
+  timeout_minutes: 30
+
+verification_commands: []
+verification_auto_fix: true
+verification_max_retries: 2
+
+discovery:
+  perspectives:
+    - architect
+    - devil_advocate
+    - security
+    - ux
+  web_search: true
+  minimal_mode: false
+
+dispatcher:
+  tick_seconds: 30
+  stuck_detection:
+    window_size: 10
+    threshold: 0.7
+
+auto_html_report: true
+budget_ceiling_usd: null

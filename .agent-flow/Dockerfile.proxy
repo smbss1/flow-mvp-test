@@ -1,0 +1,10 @@
+FROM node:22-bookworm-slim
+
+USER node
+WORKDIR /home/node
+RUN mkdir -p /home/node/proxy
+
+COPY --chown=node:node .agent-flow/proxy-server.js /home/node/proxy/server.js
+
+EXPOSE 8080
+CMD ["node", "/home/node/proxy/server.js"]
