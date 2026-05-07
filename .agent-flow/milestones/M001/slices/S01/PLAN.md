@@ -5,9 +5,13 @@ title: Add utils
 goal: "Provide a slugify helper and verify it via node:test"
 tasks:
   - T01
+  - T02
+  - T03
 dependency_graph: []
 ready_to_start:
   - T01
+  - T02
+  - T03
 decisions_covered:
   - D-01
 ---
