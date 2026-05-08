@@ -10,3 +10,8 @@ npm-debug.log*
 
 # agent-flow
 .agent-flow/discoveries/
+
+# agent-flow (auto-added by secret writer)
+.agent-flow/pi-auth.json
+.agent-flow/repo-cache/
+.agent-flow/cache/

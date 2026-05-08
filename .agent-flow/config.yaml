@@ -6,9 +6,8 @@ phases:
   skip_reassessment: auto
 models:
   discovery_light:
-    model: anthropic/claude-sonnet-4-6
-    fallbacks:
-      - openrouter/anthropic/claude-sonnet-4-6
+    model: openai-codex/gpt-5.4
+    fallbacks: []
   discovery_deep:
     model: anthropic/claude-opus-4-7
     fallbacks:
@@ -17,7 +16,7 @@ models:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
   specifier:
-    model: anthropic/claude-sonnet-4-6
+    model: openrouter/z-ai/glm-5.1
     fallbacks:
       - openrouter/z-ai/glm-5
   planner:
@@ -33,7 +32,8 @@ models:
     fallbacks: []
   self_review:
     model: anthropic/claude-sonnet-4-6
-    fallbacks: []
+    fallbacks:
+      - openrouter/z-ai/glm-5
   classifier:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
@@ -48,6 +48,20 @@ connections:
       enabled: true
       auth_method: browser
       secret_scope: project
+      last_tested_at: 2026-05-08T11:54:21.635Z
+      access_status: no_usable_model
+    openrouter:
+      enabled: true
+      last_tested_at: 2026-05-08T11:54:20.557Z
+      access_status: no_usable_model
+    anthropic:
+      enabled: true
+      last_tested_at: 2026-05-08T11:54:23.558Z
+      access_status: verified
+    openai:
+      enabled: true
+      last_tested_at: 2026-05-08T11:54:20.229Z
+      access_status: auth_failed
   git: {}
 tracker:
   type: github
@@ -106,5 +120,35 @@ context_selection:
   enabled: true
   threshold_kb: 3
   max_chars: 8000
+token_budgets:
+  discover_grilling_input: 6000
+  discover_synthesizer_input: 12000
+  self_review_input: 8000
+  feedback_input: 9000
+  planner_input: 10000
+compaction:
+  discovery:
+    enabled: true
+    keep_recent_rounds: 2
+    compact_every_rounds: 3
+    max_history_tokens_before_compact: 3000
+artifact_reducers:
+  diff: true
+  tests: true
+  lint: true
+  json_logs: true
+codemap:
+  enabled: true
+  exclude: []
+  max_file_size_kb: 200
+  max_files: 10000
+  language_overrides: {}
+  summaries:
+    enabled: true
+    max_input_chars: 8000
+    concurrency: 5
+  digest:
+    default_budget_tokens: 5000
+    max_symbols_per_file: 4
 auto_html_report: true
 budget_ceiling_usd: null
