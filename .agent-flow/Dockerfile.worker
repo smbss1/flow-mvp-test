@@ -3,6 +3,7 @@ FROM node:22-bookworm-slim
 RUN apt-get update && apt-get install -y \
     git \
     ca-certificates \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 USER node
@@ -12,8 +13,18 @@ WORKDIR /home/node
 RUN git config --global --add safe.directory '*'
 
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
-ENV PATH=$PATH:/home/node/.npm-global/bin
+ENV PATH=$PATH:/home/node/.npm-global/bin:/home/node/.local/bin
 RUN npm install -g @mariozechner/pi-coding-agent@0.73.0
 RUN mkdir -p /home/node/.pi/agent/sessions
+
+# Install rtk (Rust Token Killer) — reduces bash output tokens 60-90%
+# Note: install.sh downloads a prebuilt binary from GitHub releases (no SHA256 pin available).
+# Risk: script is fetched at build time against the master branch, not a pinned tag.
+# Mitigation: flow pins the resulting image hash; rebuild only on explicit version bump.
+RUN mkdir -p /home/node/.local/bin \
+    && curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/refs/heads/master/install.sh | sh
+
+# Install pi-rtk extension — transparent bash tool replacement that invokes rtk
+RUN pi install npm:@sherif-fanous/pi-rtk@0.3.0
 
 WORKDIR /workspace

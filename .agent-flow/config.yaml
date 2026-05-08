@@ -1,15 +1,20 @@
 version: 1
-
 token_profile: balanced
 inline_level: auto
-
 phases:
   skip_research: auto
   skip_reassessment: auto
-
 models:
-  discovery:
+  discovery_light:
+    model: anthropic/claude-sonnet-4-6
+    fallbacks:
+      - openrouter/anthropic/claude-sonnet-4-6
+  discovery_deep:
     model: anthropic/claude-opus-4-7
+    fallbacks:
+      - anthropic/claude-sonnet-4-6
+  topic_classifier:
+    model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
   specifier:
     model: anthropic/claude-sonnet-4-6
@@ -32,23 +37,32 @@ models:
   classifier:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
-
+auth:
+  llm:
+    primary_provider: openai
+    fallback_providers: []
+  git: {}
+connections:
+  llm:
+    openai-codex:
+      enabled: true
+      auth_method: browser
+      secret_scope: project
+  git: {}
 tracker:
   type: github
-  repo: "smbss1/flow-mvp-test"
+  repo: smbss1/flow-mvp-test
   labels:
-    blocked: "flow:blocked"
-    ready: "flow:ready"
-    in_progress: "flow:in-progress"
-    in_review: "flow:in-review"
-    request_changes: "flow:request-changes"
-
+    blocked: flow:blocked
+    ready: flow:ready
+    in_progress: flow:in-progress
+    in_review: flow:in-review
+    request_changes: flow:request-changes
 git:
   host: github
   base_branch: main
-  branch_prefix: "flow/"
+  branch_prefix: flow/
   isolation: worktree
-
 workers:
   max_parallel: 1
   sandbox: docker
@@ -58,26 +72,39 @@ workers:
     allow_llm_apis: true
     allow_package_managers: false
     extra_domains: []
+  scope:
+    deny_paths:
+      - .pi/**
+      - .agent-flow/sessions/**
+      - "*.jsonl"
+    allow_companions: []
   timeout_minutes: 30
-
+  bash_optimization: rtk
 verification_commands: []
 verification_auto_fix: true
 verification_max_retries: 2
-
 discovery:
-  perspectives:
-    - architect
-    - devil_advocate
-    - security
-    - ux
-  web_search: true
-  minimal_mode: false
-
+  default_mode: light
+  light:
+    max_rounds: 15
+    repo_exploration: true
+    repo_files_max: 5
+  deep:
+    max_rounds: 40
+    repo_exploration: true
+    repo_files_max: 15
+    require_all_angles_covered: true
+  past_decisions_lookback_days: 90
+  glossary_skill: true
+  budget_token_ceiling: null
 dispatcher:
   tick_seconds: 30
   stuck_detection:
     window_size: 10
     threshold: 0.7
-
+context_selection:
+  enabled: true
+  threshold_kb: 3
+  max_chars: 8000
 auto_html_report: true
 budget_ceiling_usd: null

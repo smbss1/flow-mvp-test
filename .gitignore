@@ -7,3 +7,6 @@
 
 .npm/
 npm-debug.log*
+
+# agent-flow
+.agent-flow/discoveries/
