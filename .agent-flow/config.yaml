@@ -1,12 +1,12 @@
 version: 1
-token_profile: balanced
-inline_level: auto
+token_profile: budget
+inline_level: full
 phases:
   skip_research: auto
   skip_reassessment: auto
 models:
   discovery_light:
-    model: openai-codex/gpt-5.4
+    model: anthropic/claude-sonnet-4-6
     fallbacks: []
   discovery_deep:
     model: anthropic/claude-opus-4-7
@@ -16,53 +16,49 @@ models:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
   specifier:
-    model: openrouter/z-ai/glm-5.1
-    fallbacks:
-      - openrouter/z-ai/glm-5
+    model: anthropic/claude-sonnet-4-6
+    fallbacks: []
   planner:
     model: anthropic/claude-opus-4-7
-    fallbacks:
-      - openrouter/z-ai/glm-5
+    fallbacks: []
   worker:
     model: anthropic/claude-sonnet-4-6
-    fallbacks:
-      - openrouter/anthropic/claude-sonnet-4-6
+    fallbacks: []
   worker_simple:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
   self_review:
     model: anthropic/claude-sonnet-4-6
-    fallbacks:
-      - openrouter/z-ai/glm-5
+    fallbacks: []
   classifier:
     model: anthropic/claude-haiku-4-5-20251001
     fallbacks: []
 auth:
   llm:
-    primary_provider: openai
-    fallback_providers: []
-  git: {}
+    primary_provider: anthropic
+    fallback_providers:
+      - openrouter
+  git:
+    preferred_host: github
+    default_repo: smbss1/flow-mvp-test
 connections:
   llm:
-    openai-codex:
-      enabled: true
-      auth_method: browser
-      secret_scope: project
-      last_tested_at: 2026-05-08T11:54:21.635Z
-      access_status: no_usable_model
-    openrouter:
-      enabled: true
-      last_tested_at: 2026-05-08T11:54:20.557Z
-      access_status: no_usable_model
     anthropic:
       enabled: true
-      last_tested_at: 2026-05-08T11:54:23.558Z
+      auth_method: api-key
+      secret_scope: project
+      last_tested_at: 2026-05-08T17:03:40.431Z
       access_status: verified
-    openai:
+    openrouter:
       enabled: true
-      last_tested_at: 2026-05-08T11:54:20.229Z
+      last_tested_at: 2026-05-08T17:03:35.609Z
       access_status: auth_failed
-  git: {}
+  git:
+    github:
+      enabled: true
+      secret_scope: project
+      last_tested_at: 2026-05-08T17:01:58.633Z
+      scopes_ok: true
 tracker:
   type: github
   repo: smbss1/flow-mvp-test
@@ -143,6 +139,8 @@ codemap:
   max_file_size_kb: 200
   max_files: 10000
   language_overrides: {}
+  lazy_grammar_download: true
+  grammars: {}
   summaries:
     enabled: true
     max_input_chars: 8000
