@@ -32,6 +32,24 @@ test("parseAuthorizationHeader: rejects malformed header with too many parts", (
   assert.equal(result.error, "Malformed Authorization header", "error message must be stable for malformed header");
 });
 
+test("parseAuthorizationHeader: accepts case-insensitive Bearer keyword", () => {
+  const result = parseAuthorizationHeader("bearer abc123");
+  assert.equal(result.ok, true, "ok must be true for lowercase 'bearer'");
+  assert.equal(result.token, "abc123", "token must be extracted exactly as-is");
+});
+
+test("parseAuthorizationHeader: accepts tab separator between Bearer and token", () => {
+  const result = parseAuthorizationHeader("Bearer\tabc123");
+  assert.equal(result.ok, true, "ok must be true for tab separator");
+  assert.equal(result.token, "abc123", "token must be extracted with tab separator");
+});
+
+test("parseAuthorizationHeader: accepts double-space separator", () => {
+  const result = parseAuthorizationHeader("Bearer  abc123");
+  assert.equal(result.ok, true, "ok must be true for double-space separator");
+  assert.equal(result.token, "abc123", "token must be extracted with double-space separator");
+});
+
 test("parseAuthorizationHeader: rejects non-Bearer scheme", () => {
   const result = parseAuthorizationHeader("Basic abc123");
   assert.equal(result.ok, false, "ok must be false for non-Bearer scheme");

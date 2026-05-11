@@ -11,13 +11,13 @@ function parseAuthorizationHeader(header) {
     return { ok: false, error: "Missing Authorization header" };
   }
 
-  const parts = header.split(" ");
+  const parts = header.split(/[ \t]+/);
 
   if (parts.length !== 2) {
     return { ok: false, error: "Malformed Authorization header" };
   }
 
-  if (parts[0] !== "Bearer") {
+  if (parts[0].toLowerCase() !== "bearer") {
     return { ok: false, error: "Unsupported authorization scheme" };
   }
 
